@@ -36,9 +36,9 @@ public:
     }
     virtual int sub(int a, int b)
     {
-        m_n_last_sub =  a - b;
+        int n = _sub(a, b);
         wprintf_s(L"[%s]() exit.\n", __WFUNCTION__);
-        return m_n_last_sub;
+        return n;
     }
 
     int mul(int a, int b)
@@ -46,6 +46,7 @@ public:
         wprintf_s(L"[%s]() exit.\n", __WFUNCTION__);
         return a * b;
     }
+
 public:
     croot() : m_n_last_add(0), m_n_last_sub(0)
     {
@@ -55,6 +56,13 @@ public:
     virtual ~croot()
     {
         wprintf_s(L"[%s]() exit.\n", __WFUNCTION__);
+    }
+protected:
+    int _sub(int a, int b)
+    {
+        m_n_last_sub = a - b;
+        wprintf_s(L"[%s]() exit.\n", __WFUNCTION__);
+        return m_n_last_sub;
     }
 protected:
     int m_n_last_add;
@@ -78,8 +86,9 @@ public:
     }
     virtual int sub(int a, int b)
     {
+        int n = _sub(a, b);
         wprintf_s(L"[%s]() exit.\n", __WFUNCTION__);
-        return a-b;
+        return n;
     }
 
     int mul(int a, int b)
@@ -103,6 +112,14 @@ public:
         wprintf_s(L"[%s]() exit.\n", __WFUNCTION__);
     }
 protected:
+    int _sub(int a, int b)
+    {
+        int n = croot::_sub(a, b);
+        wprintf_s(L"[%s]() exit.\n", __WFUNCTION__);
+        return n;
+    }
+
+protected:
 private:
 
 };
@@ -113,6 +130,7 @@ int main()
 {
     std::wcout << L"Hello World!\n";
     //
+    std::wcout << L"====================!\n";
     i_root::type_ptr ptr_root(new croot());
 
     ptr_root->add(1, 2);
@@ -121,6 +139,7 @@ int main()
 
     ptr_root.reset();
     //
+    std::wcout << L"====================!\n";
     i_root::type_ptr ptr_sub(new csub(3,4));
     ptr_sub->add(1, 2);
     ptr_sub->sub(2, 3);
@@ -128,6 +147,7 @@ int main()
 
     ptr_sub.reset();
     //
+    std::wcout << L"====================!\n";
     csub::type_ptr ptr_sub1(new csub(3, 4));
     ptr_sub1->add(1, 2);
     ptr_sub1->sub(2, 3);
